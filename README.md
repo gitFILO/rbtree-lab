@@ -42,3 +42,13 @@ Balanced search tree로 많이 쓰이는 Red-black tree (이하 RB tree)를 C �
 ([영어](https://en.wikipedia.org/wiki/Red%E2%80%93black_tree))
 - CLRS book (Introduction to Algorithms) 13장 레드 블랙 트리 - Sentinel node를 사용한 구현
 - [Wikipedia:균형 이진 트리의 구현 방법들](https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree#Implementations)
+
+## 추가 구현 목록
+1. `left_rotate(tree, node)`: 왼쪽으로 회전싴킴
+2. `right_rotate(tree, node)`: 오른쪽으로 회전시킴
+3. `rb_insert_fixup(tree, node)`: 삽입 시 rbtree 리밸런싱
+4. `rb_delete_fixup(tree, node)`: 삭제 시 rbtree 리밸런싱
+5. `rb_transplant(tree, node_u, node_v): node_u를 node_v로 대체(이식)
+
+
+
