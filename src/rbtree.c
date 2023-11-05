@@ -12,7 +12,6 @@ rbtree *new_rbtree(void) {
   p->nil = (node_t *)calloc(1, sizeof(node_t));
   p->nil->color = RBTREE_BLACK;
   p->root = p->nil;
-  printf("hello..\n\n");
   return p;
 }
 
@@ -134,13 +133,19 @@ node_t *rbtree_find(const rbtree *t, const key_t key) {
 
 node_t *rbtree_min(const rbtree *t) {
   // TODO: implement find
+  node_t *cur = t->root;
+  
+  while(cur->left != t->nil) cur = cur->left; // cur의 왼쪽자식이 nil이면 종료
 
-  return t->root;
+  return cur;
 }
 
 node_t *rbtree_max(const rbtree *t) {
-  // TODO: implement find
-  return t->root;
+  node_t *cur = t->root;
+  
+  while(cur->right != t->nil) cur = cur->right; // cur의 오른쪽자식이 nil이면 종료
+
+  return cur;
 }
 
 int rbtree_erase(rbtree *t, node_t *p) {
