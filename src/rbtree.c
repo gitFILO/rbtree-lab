@@ -16,8 +16,23 @@ rbtree *new_rbtree(void) {
 }
 
 void delete_rbtree(rbtree *t) {
-  // 안의 노드 먼저 전부 free 해야함
-  free(t);
+  free_rbtree_nodes(t,t->root); // 먼저 트리 내의 모든 노드를 free!
+  free(t); // 트리 free
+}
+
+void free_rbtree_nodes(rbtree *t,node_t* cur) {
+    if (cur == t->nil) {
+        return;
+    }
+
+    // 왼쪽 서브트리 해제
+    free_rbtree_nodes(t, cur->left);
+
+    // 오른쪽 서브트리 해제
+    free_rbtree_nodes(t, cur->right);
+
+    // 노드 메모리 해제
+    free(cur);
 }
 
 node_t *rbtree_insert(rbtree *t, const key_t key) {

@@ -49,3 +49,4 @@ Balanced search tree로 많이 쓰이는 Red-black tree (이하 RB tree)를 C �
 3. `rb_insert_fixup(tree, node)`: 삽입 시 rbtree 리밸런싱
 4. `rb_delete_fixup(tree, node)`: 삭제 시 rbtree 리밸런싱
 5. `rb_transplant(tree, node_u, node_v)`: node_u를 node_v로 대체(이식)
+6. `free_rbtree_nodes`: 레드블랙트리 내에 존재하는 노드의 메모리를 free
