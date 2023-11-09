@@ -55,24 +55,26 @@ void test_find_single(const key_t key, const key_t wrong_key) {
 
 // erase should delete root node
 void test_erase_root(const key_t key) {
+  printf("start erase_root");
   rbtree *t = new_rbtree();
   node_t *p = rbtree_insert(t, key);
   assert(p != NULL);
   assert(t->root == p);
   assert(p->key == key);
 
+  printf("before erase");
   rbtree_erase(t, p);
-#ifdef SENTINEL
+  #ifdef SENTINEL
   assert(t->root == t->nil);
-#else
+  #else
   assert(t->root == NULL);
-#endif
-
+  #endif
   delete_rbtree(t);
 }
 
 static void insert_arr(rbtree *t, const key_t *arr, const size_t n) {
   for (size_t i = 0; i < n; i++) {
+    printf("insert start..%ld번째\n",i);
     rbtree_insert(t, arr[i]);
   }
 }
@@ -93,16 +95,14 @@ static int comp(const void *p1, const void *p2) {
 void test_minmax(key_t *arr, const size_t n) {
   // null array is not allowed
   assert(n > 0 && arr != NULL);
-
   rbtree *t = new_rbtree();
   assert(t != NULL);
-
   insert_arr(t, arr, n);
   assert(t->root != NULL);
+  //printf("ok?\n");
 #ifdef SENTINEL
   assert(t->root != t->nil);
 #endif
-
   qsort((void *)arr, n, sizeof(key_t), comp);
   node_t *p = rbtree_min(t);
   assert(p != NULL);
@@ -243,14 +243,14 @@ static bool color_traverse(const node_t *p, const color_t parent_color,
     }
     return true;
   }
-  if (parent_color == RBTREE_RED && p->color == RBTREE_RED) {
+  if (parent_color == RBTREE_RED && p->color == RBTREE_RED) { // 레드가 연속으로 2개면 false -> test 실패 하잖아. 지금 트리에서 2개 연속 레드가 있어서 그런듯..
     return false;
   }
   int next_depth = ((p->color == RBTREE_BLACK) ? 1 : 0) + black_depth;
   return color_traverse(p->left, p->color, next_depth, nil) &&
          color_traverse(p->right, p->color, next_depth, nil);
 }
-
+ 
 void test_color_constraint(const rbtree *t) {
   assert(t != NULL);
 #ifdef SENTINEL
@@ -315,12 +315,14 @@ void test_find_erase(rbtree *t, const key_t *arr, const size_t n) {
     node_t *p = rbtree_insert(t, arr[i]);
     assert(p != NULL);
   }
+  //printf("\n트리 생성 종료!\n");
 
   for (int i = 0; i < n; i++) {
     node_t *p = rbtree_find(t, arr[i]);
-    // printf("arr[%d] = %d\n", i, arr[i]);
+    printf("arr[%d] = %d\n", i, arr[i]);
     assert(p != NULL);
     assert(p->key == arr[i]);
+    //printf("\nbefore erase %d...\n",arr[i]);
     rbtree_erase(t, p);
   }
 
@@ -371,13 +373,23 @@ int main(void) {
   test_init();
   test_insert_single(1024);
   test_find_single(512, 1024);
+  printf("test_find_single end.--------\n");
   test_erase_root(128);
-  test_find_erase_fixed();
+  printf("test_erase_root end.---------\n");
+  printf("\n?\n");
+  printf("test_find_erase_fixed start!---------------");
+  //test_find_erase_fixed();
+  printf("find_erase_fixed end.--------\n");
   test_minmax_suite();
-  test_to_array_suite();
+  printf("test_minmax_suite end.-------\n");
+  //test_to_array_suite();
+  printf("test_to_array_suite end.-----\n");
   test_distinct_values();
+  printf("test_distinct_values end.-----\n");
   test_duplicate_values();
+  printf("test_duplicate_values end.-----\n");
   test_multi_instance();
+  printf("test_multi_instance end.-----\n");
   test_find_erase_rand(10000, 17);
   printf("Passed all tests!\n");
 }
